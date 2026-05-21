@@ -6,8 +6,8 @@
 Developed as part of:
 
 **MDPH 613 — Quality Assurance of Medical Images**
-Beirut Arab University
-Supervisor: Dr. Lama Affara
+-Beirut Arab University
+-Supervisor: Dr. Lama Affara
 
 ---
 
