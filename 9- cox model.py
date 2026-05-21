@@ -2,9 +2,9 @@ import pandas as pd
 
 from lifelines import CoxPHFitter
 
-# =========================================================
+
 # HR+/HER2+ SUBGROUP
-# =========================================================
+
 
 subtype_col = "Mol Subtype"
 
@@ -19,9 +19,9 @@ hrher2_labels = [
 hrher2 = df[df[subtype_col].isin(hrher2_labels)].copy()
 
 print("HR+/HER2+ size:", hrher2.shape)
-# =========================================================
+
 # REBUILD SURVIVAL TIME VARIABLES
-# =========================================================
+
 
 event_col = "Recurrence event(s)"
 
@@ -76,9 +76,9 @@ hrher2 = hrher2[
 ]
 
 print(hrher2.shape)
-# =========================================================
+
 # KEEP NEEDED VARIABLES
-# =========================================================
+
 
 cox_df = hrher2[
     [
@@ -89,17 +89,17 @@ cox_df = hrher2[
     ]
 ].copy()
 
-# =========================================================
+
 # CLEAN VARIABLES
-# =========================================================
+
 
 cox_df = cox_df.dropna()
 
 cox_df["Cluster"] = cox_df["Cluster"].astype(int)
 
-# =========================================================
+
 # ONE-HOT ENCODE MANUFACTURER
-# =========================================================
+
 
 cox_df = pd.get_dummies(
     cox_df,
@@ -113,9 +113,9 @@ print(cox_df.columns)
 print("\nFinal shape:")
 print(cox_df.shape)
 
-# =========================================================
+
 # FIT COX MODEL
-# =========================================================
+
 
 cph = CoxPHFitter(
     penalizer=0.01
@@ -127,9 +127,9 @@ cph.fit(
     event_col="Recurrence event(s)"
 )
 
-# =========================================================
+
 # RESULTS
-# =========================================================
+
 
 summary = cph.summary[
     [

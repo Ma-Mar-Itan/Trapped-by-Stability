@@ -9,18 +9,18 @@ from sklearn.metrics import (
     davies_bouldin_score
 )
 
-# =========================================================
+
 # USE PCA SPACE FOR CLUSTERING
-# =========================================================
+
 
 # use first 10 PCs
 X_cluster = X_pca[:, :10]
 
 print("Clustering matrix shape:", X_cluster.shape)
 
-# =========================================================
+
 # TEST k = 2 TO 6
-# =========================================================
+
 
 results = []
 
@@ -53,18 +53,18 @@ for k in range(2, 7):
         "davies_bouldin": db_score
     })
 
-# =========================================================
+
 # RESULTS TABLE
-# =========================================================
+
 
 results_df = pd.DataFrame(results)
 
 print("\nCluster validity results:")
 print(results_df)
 
-# =========================================================
+
 # PLOT METRICS
-# =========================================================
+
 
 fig, axes = plt.subplots(1, 3, figsize=(18, 5))
 
@@ -101,9 +101,9 @@ axes[2].set_xlabel("k")
 plt.tight_layout()
 plt.show()
 
-# =========================================================
+
 # FIT FINAL k=2 MODEL
-# =========================================================
+
 
 kmeans_final = KMeans(
     n_clusters=2,
@@ -113,9 +113,9 @@ kmeans_final = KMeans(
 
 cluster_labels = kmeans_final.fit_predict(X_cluster)
 
-# =========================================================
+
 # SAVE CLUSTER LABELS
-# =========================================================
+
 
 cluster_df = pd.DataFrame({
     "Patient ID": patient_ids,
@@ -131,9 +131,8 @@ cluster_df.to_csv(output_path, index=False)
 print("\nSaved cluster labels:")
 print(output_path)
 
-# =========================================================
+
 # VISUALIZE CLUSTERS
-# =========================================================
 
 plt.figure(figsize=(8, 6))
 

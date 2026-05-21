@@ -104,9 +104,8 @@ ari_df.to_csv(output_path, index=False)
 print("\nSaved:")
 print(output_path)
 
-# =========================================================
+
 # VISUALIZE
-# =========================================================
 
 plt.figure(figsize=(8, 5))
 

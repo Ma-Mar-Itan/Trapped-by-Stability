@@ -2,15 +2,15 @@ import pandas as pd
 import matplotlib.pyplot as plt
 from scipy.stats import chi2_contingency
 
-# =========================================================
+
 # PATHS
-# =========================================================
+
 merged_path = r"C:\Users\malek\Desktop\Dr. Lama\Separating Cluster Stability from Biological Identity in Breast MRI Radiomic Phenotype Discovery\data\merged_dataset.csv"
 cluster_path = r"C:\Users\malek\Desktop\Dr. Lama\Separating Cluster Stability from Biological Identity in Breast MRI Radiomic Phenotype Discovery\data\cluster_labels_k2.csv"
 
-# =========================================================
+
 # LOAD + MERGE
-# =========================================================
+
 merged = pd.read_csv(merged_path)
 clusters = pd.read_csv(cluster_path)
 
@@ -33,9 +33,9 @@ manufacturer_map = {
 
 df["Manufacturer_clean"] = df[manufacturer_col].replace(manufacturer_map)
 
-# =========================================================
+
 # CONTINGENCY TABLE
-# =========================================================
+
 table = pd.crosstab(
     df["Cluster"],
     df["Manufacturer_clean"]
@@ -63,9 +63,9 @@ col_pct = table.div(table.sum(axis=0), axis=1) * 100
 print("\nColumn percentages:")
 print(col_pct.round(2))
 
-# =========================================================
+
 # PLOT 1: COUNTS
-# =========================================================
+
 plt.figure(figsize=(8, 6))
 
 table.plot(
@@ -82,9 +82,9 @@ plt.grid(axis="y", alpha=0.3)
 plt.tight_layout()
 plt.show()
 
-# =========================================================
+
 # PLOT 2: ROW-NORMALIZED PERCENTAGES
-# =========================================================
+
 plt.figure(figsize=(8, 6))
 
 row_pct.plot(
@@ -102,9 +102,9 @@ plt.grid(axis="y", alpha=0.3)
 plt.tight_layout()
 plt.show()
 
-# =========================================================
+
 # PLOT 3: COLUMN-NORMALIZED PERCENTAGES
-# =========================================================
+
 plt.figure(figsize=(8, 6))
 
 col_pct.T.plot(
@@ -122,10 +122,10 @@ plt.grid(axis="y", alpha=0.3)
 plt.tight_layout()
 plt.show()
 
-# =========================================================
+
 # PLOT 4: PCA SCATTER COLORED BY MANUFACTURER
 # Requires X_pca from your PCA step
-# =========================================================
+
 plot_df = pd.DataFrame({
     "PC1": X_pca[:, 0],
     "PC2": X_pca[:, 1],
@@ -153,9 +153,9 @@ plt.grid(True, alpha=0.3)
 plt.tight_layout()
 plt.show()
 
-# =========================================================
+
 # PLOT 5: PCA SCATTER COLORED BY CLUSTER
-# =========================================================
+
 plt.figure(figsize=(9, 7))
 
 for cluster in sorted(plot_df["Cluster"].dropna().unique()):
@@ -193,9 +193,9 @@ plot_df = pd.DataFrame({
 
 fig, axes = plt.subplots(1, 2, figsize=(15, 6), sharex=True, sharey=True)
 
-# =========================================================
+
 # LEFT: COLORED BY CLUSTER
-# =========================================================
+
 for cluster in sorted(plot_df["Cluster"].dropna().unique()):
     temp = plot_df[plot_df["Cluster"] == cluster]
 
@@ -213,9 +213,9 @@ axes[0].set_ylabel("PC2")
 axes[0].legend(title="Cluster")
 axes[0].grid(True, alpha=0.3)
 
-# =========================================================
+
 # RIGHT: COLORED BY MANUFACTURER
-# =========================================================
+
 for manufacturer in plot_df["Manufacturer"].dropna().unique():
     temp = plot_df[plot_df["Manufacturer"] == manufacturer]
 
@@ -232,9 +232,9 @@ axes[1].set_xlabel("PC1")
 axes[1].legend(title="Manufacturer")
 axes[1].grid(True, alpha=0.3)
 
-# =========================================================
+
 # MAIN TITLE
-# =========================================================
+
 fig.suptitle(
     "Radiomic Phenotype and Manufacturer Overlap in PCA Space",
     fontsize=16
@@ -279,9 +279,9 @@ row_pct.to_csv(
 
 import pandas as pd
 
-# =========================================================
+
 # CLUSTER × MANUFACTURER SUMMARY
-# =========================================================
+
 
 table = pd.crosstab(
     df["Cluster"],
@@ -307,9 +307,9 @@ print(row_pct.round(1))
 print("\nCluster percentage within each manufacturer:")
 print(col_pct.round(1))
 
-# =========================================================
+
 # SAVE TABLES
-# =========================================================
+
 
 output_dir = r"C:\Users\malek\Desktop\Dr. Lama\Separating Cluster Stability from Biological Identity in Breast MRI Radiomic Phenotype Discovery\data"
 

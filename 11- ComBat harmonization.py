@@ -10,9 +10,9 @@ from sklearn.decomposition import PCA
 from sklearn.cluster import KMeans
 from sklearn.metrics import adjusted_rand_score
 
-# =========================================================
+
 # COMBAT HARMONIZATION
-# =========================================================
+
 
 covars = pd.DataFrame({
     "Manufacturer": df["Manufacturer_clean"].values
@@ -133,9 +133,9 @@ within_results_df.to_csv(
 #Biological/outcome association after harmonization
 from scipy.stats import chi2_contingency
 
-# =========================================================
+
 # HELPER FUNCTION
-# =========================================================
+
 
 def association_test(data, cluster_col, variable_col):
     table = pd.crosstab(data[cluster_col], data[variable_col])
@@ -143,21 +143,21 @@ def association_test(data, cluster_col, variable_col):
 
     return table, p
 
-# =========================================================
+
 # CREATE ANALYSIS DATAFRAME
-# =========================================================
+
 
 harm_df = df.copy()
 
 harm_df["Residualized_Cluster"] = resid_labels
 harm_df["ComBat_Cluster"] = combat_labels
 
-# =========================================================
+
 # TEST ASSOCIATIONS
-# =========================================================
-# =========================================================
+
+
 # ADD CLINICAL COLUMNS INTO harm_df
-# =========================================================
+
 
 clinical_cols = [
     "Patient ID",
@@ -248,25 +248,25 @@ def bootstrap_ari(X_matrix, base_labels, n_bootstraps=20, frac=0.80, seed=42):
     return np.array(scores)
 
 
-# =========================================================
+
 # RAW STABILITY
-# =========================================================
+
 raw_boot = bootstrap_ari(
     X_pca[:, :10],
     raw_labels
 )
 
-# =========================================================
+
 # RESIDUALIZED STABILITY
-# =========================================================
+
 resid_boot = bootstrap_ari(
     X_resid_pca[:, :10],
     resid_labels
 )
 
-# =========================================================
+
 # COMBAT STABILITY
-# =========================================================
+
 combat_boot = bootstrap_ari(
     X_combat_pca[:, :10],
     combat_labels

@@ -4,18 +4,18 @@ import numpy as np
 from scipy.stats import ttest_ind
 from statsmodels.stats.multitest import multipletests
 
-# =========================================================
+
 # PATHS
-# =========================================================
+
 radiomics_path = r"C:\Users\malek\Desktop\Dr. Lama\Separating Cluster Stability from Biological Identity in Breast MRI Radiomic Phenotype Discovery\data\Radiomic Features Data\X_radiomics_zscored_with_ids.csv"
 
 cluster_path = r"C:\Users\malek\Desktop\Dr. Lama\Separating Cluster Stability from Biological Identity in Breast MRI Radiomic Phenotype Discovery\data\cluster_labels_k2.csv"
 
 output_path = r"C:\Users\malek\Desktop\Dr. Lama\Separating Cluster Stability from Biological Identity in Breast MRI Radiomic Phenotype Discovery\data\top_cluster_features.csv"
 
-# =========================================================
+
 # LOAD DATA
-# =========================================================
+
 X_df = pd.read_csv(radiomics_path)
 clusters = pd.read_csv(cluster_path)
 
@@ -27,26 +27,25 @@ df = X_df.merge(
 
 print("Merged radiomics + clusters:", df.shape)
 
-# =========================================================
+
 # FEATURE COLUMNS
-# =========================================================
+
 feature_cols = [
     col for col in df.columns
     if col not in ["Patient ID", "Cluster"]
 ]
 
-# =========================================================
 # SPLIT BY CLUSTER
-# =========================================================
+
 cluster0 = df[df["Cluster"] == 0]
 cluster1 = df[df["Cluster"] == 1]
 
 print("Cluster 0 n:", cluster0.shape[0])
 print("Cluster 1 n:", cluster1.shape[0])
 
-# =========================================================
+
 # FEATURE-WISE DIFFERENCE TESTS
-# =========================================================
+
 results = []
 
 for feature in feature_cols:
@@ -94,33 +93,33 @@ for feature in feature_cols:
 
 results_df = pd.DataFrame(results)
 
-# =========================================================
+
 # MULTIPLE TESTING CORRECTION
-# =========================================================
+
 results_df["q_value"] = multipletests(
     results_df["p_value"],
     method="fdr_bh"
 )[1]
 
-# =========================================================
+
 # SORT BY EFFECT SIZE
-# =========================================================
+
 results_df = results_df.sort_values(
     by="abs_cohens_d",
     ascending=False
 )
 
-# =========================================================
+
 # SAVE RESULTS
-# =========================================================
+
 results_df.to_csv(output_path, index=False)
 
 print("\nSaved top cluster-separating features:")
 print(output_path)
 
-# =========================================================
+
 # DISPLAY TOP 30 FEATURES
-# =========================================================
+
 top30 = results_df.head(30)
 
 print("\nTop 30 cluster-separating radiomic features:")

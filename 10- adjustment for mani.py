@@ -7,9 +7,9 @@ from sklearn.decomposition import PCA
 from sklearn.cluster import KMeans
 from sklearn.metrics import adjusted_rand_score
 
-# =========================================================
+
 # PATHS
-# =========================================================
+
 radiomics_path = r"C:\Users\malek\Desktop\Dr. Lama\Separating Cluster Stability from Biological Identity in Breast MRI Radiomic Phenotype Discovery\data\Radiomic Features Data\X_radiomics_zscored_with_ids.csv"
 
 merged_path = r"C:\Users\malek\Desktop\Dr. Lama\Separating Cluster Stability from Biological Identity in Breast MRI Radiomic Phenotype Discovery\data\merged_dataset.csv"
@@ -18,9 +18,9 @@ raw_cluster_path = r"C:\Users\malek\Desktop\Dr. Lama\Separating Cluster Stabilit
 
 output_dir = r"C:\Users\malek\Desktop\Dr. Lama\Separating Cluster Stability from Biological Identity in Breast MRI Radiomic Phenotype Discovery\data"
 
-# =========================================================
+
 # LOAD DATA
-# =========================================================
+
 X_df = pd.read_csv(radiomics_path)
 merged = pd.read_csv(merged_path)
 raw_clusters = pd.read_csv(raw_cluster_path)
@@ -39,9 +39,9 @@ df = df.merge(
 
 print("Merged shape:", df.shape)
 
-# =========================================================
+
 # CLEAN MANUFACTURER
-# =========================================================
+
 manufacturer_map = {
     0: "GE",
     1: "MPTronic",
@@ -58,9 +58,9 @@ df["Manufacturer_clean"] = df["Manufacturer"].replace(manufacturer_map)
 
 print(df["Manufacturer_clean"].value_counts(dropna=False))
 
-# =========================================================
+
 # FEATURE MATRIX
-# =========================================================
+
 feature_cols = [
     col for col in X_df.columns
     if col != "Patient ID"
@@ -70,9 +70,9 @@ X = df[feature_cols].copy()
 
 raw_labels = df["Cluster"].values
 
-# =========================================================
+
 # DESIGN MATRIX FOR MANUFACTURER
-# =========================================================
+
 D = pd.get_dummies(
     df["Manufacturer_clean"],
     drop_first=True
@@ -81,10 +81,10 @@ D = pd.get_dummies(
 print("Residualization design matrix:")
 print(D.head())
 
-# =========================================================
+
 # LINEAR RESIDUALIZATION
 # Remove manufacturer-associated linear component
-# =========================================================
+
 lr = LinearRegression()
 
 lr.fit(D.values, X.values)
@@ -108,9 +108,9 @@ X_resid_scaled = pd.DataFrame(
     index=df.index
 )
 
-# =========================================================
+
 # PCA AFTER RESIDUALIZATION
-# =========================================================
+
 pca_resid = PCA(
     svd_solver="randomized",
     random_state=42
@@ -118,9 +118,9 @@ pca_resid = PCA(
 
 X_resid_pca = pca_resid.fit_transform(X_resid_scaled)
 
-# =========================================================
+
 # KMEANS AFTER RESIDUALIZATION
-# =========================================================
+
 kmeans_resid = KMeans(
     n_clusters=2,
     n_init=20,
@@ -131,9 +131,9 @@ resid_labels = kmeans_resid.fit_predict(
     X_resid_pca[:, :10]
 )
 
-# =========================================================
+
 # COMPARE RAW CLUSTERS VS RESIDUALIZED CLUSTERS
-# =========================================================
+
 ari_vs_raw = adjusted_rand_score(
     raw_labels,
     resid_labels
@@ -142,9 +142,9 @@ ari_vs_raw = adjusted_rand_score(
 print("\nARI between raw clusters and residualized clusters:")
 print(ari_vs_raw)
 
-# =========================================================
+
 # SAVE RESIDUALIZED CLUSTERS
-# =========================================================
+
 resid_cluster_df = pd.DataFrame({
     "Patient ID": df["Patient ID"],
     "Raw_Cluster": raw_labels,

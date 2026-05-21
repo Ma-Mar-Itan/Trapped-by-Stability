@@ -3,25 +3,25 @@ import numpy as np
 
 from scipy.stats import chi2_contingency, fisher_exact
 
-# =========================================================
+
 # PATHS
-# =========================================================
+
 merged_path = r"C:\Users\malek\Desktop\Dr. Lama\Separating Cluster Stability from Biological Identity in Breast MRI Radiomic Phenotype Discovery\data\merged_dataset.csv"
 
 cluster_path = r"C:\Users\malek\Desktop\Dr. Lama\Separating Cluster Stability from Biological Identity in Breast MRI Radiomic Phenotype Discovery\data\cluster_labels_k2.csv"
 
-# =========================================================
+
 # LOAD DATA
-# =========================================================
+
 merged = pd.read_csv(merged_path)
 clusters = pd.read_csv(cluster_path)
 
 print("Merged shape:", merged.shape)
 print("Clusters shape:", clusters.shape)
 
-# =========================================================
+
 # MERGE CLUSTER LABELS INTO FULL DATASET
-# =========================================================
+
 df_clustered = merged.merge(
     clusters,
     on="Patient ID",
@@ -30,9 +30,9 @@ df_clustered = merged.merge(
 
 print("Clustered dataset shape:", df_clustered.shape)
 
-# =========================================================
+
 # CHECK COLUMN NAMES
-# =========================================================
+
 print("\nColumns containing possible manufacturer/subtype/recurrence info:")
 
 for col in df_clustered.columns:
@@ -49,17 +49,17 @@ manufacturer_col = "Manufacturer"
 subtype_col = "Mol Subtype"
 recurrence_col = "Recurrence event(s)"
 
-# =========================================================
+
 # SET COLUMN NAMES
-# =========================================================
+
 
 manufacturer_col = "Manufacturer"
 subtype_col = "Mol Subtype"
 recurrence_col = "Recurrence event(s)"
 
-# =========================================================
+
 # ASSOCIATION TEST FUNCTION
-# =========================================================
+
 
 def chi_square_test(data, row_col, col_col):
 
@@ -81,9 +81,9 @@ def chi_square_test(data, row_col, col_col):
 
     return table, p
 
-# =========================================================
+
 # CLUSTER vs MANUFACTURER
-# =========================================================
+
 
 manufacturer_table, manufacturer_p = chi_square_test(
     df_clustered,
@@ -91,9 +91,9 @@ manufacturer_table, manufacturer_p = chi_square_test(
     manufacturer_col
 )
 
-# =========================================================
+
 # CLUSTER vs SUBTYPE
-# =========================================================
+
 
 subtype_table, subtype_p = chi_square_test(
     df_clustered,
@@ -101,9 +101,9 @@ subtype_table, subtype_p = chi_square_test(
     subtype_col
 )
 
-# =========================================================
+
 # CLUSTER vs RECURRENCE
-# =========================================================
+
 
 recurrence_table, recurrence_p = chi_square_test(
     df_clustered,
@@ -111,9 +111,9 @@ recurrence_table, recurrence_p = chi_square_test(
     recurrence_col
 )
 
-# =========================================================
+
 # SUMMARY TABLE
-# =========================================================
+
 
 association_results = pd.DataFrame({
     "Variable": [
@@ -134,9 +134,9 @@ print("========================================")
 
 print(association_results)
 
-# =========================================================
+
 # SAVE RESULTS
-# =========================================================
+
 
 output_path = (
     r"C:\Users\malek\Desktop\Dr. Lama\Separating Cluster Stability from Biological Identity in Breast MRI Radiomic Phenotype Discovery\data\cluster_association_results.csv"
