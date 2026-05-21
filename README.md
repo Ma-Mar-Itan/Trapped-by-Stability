@@ -85,6 +85,8 @@ The analysis was implemented in:
 * pandas
 * numpy
 * matplotlib
+* neuroCombat
+
 
 Random seed:
 
