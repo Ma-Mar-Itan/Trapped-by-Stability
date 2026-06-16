@@ -4,7 +4,58 @@
 
 Developed as part of:
 
+<<<<<<< HEAD
 **Quality Assurance of Medical Images**
+=======
+**MDPH 613 — Quality Assurance of Medical Images**
+-Beirut Arab University
+-Supervisor: Dr. Lama Affara
+
+---
+
+# Overview
+
+This repository contains the full analysis pipeline, preprocessing workflow, and statistical framework used to investigate acquisition confounding in multi-vendor breast MRI radiomic phenotype discovery.
+
+Using a cohort of 922 breast MRI patients, the study demonstrates that:
+
+* highly stable unsupervised radiomic clusters can still be acquisition-driven rather than biologically meaningful,
+* conventional clustering stability metrics alone are insufficient for validating radiomic phenotypes,
+* harmonization methods can fundamentally alter cluster identity and downstream prognostic associations.
+
+The project introduces a falsification-oriented framework designed to distinguish:
+
+* **cluster stability**
+  from
+* **cluster biological validity**
+
+---
+
+# Main Research Question
+
+Can a radiomic phenotype remain statistically stable while failing biological validity checks due to acquisition confounding?
+
+This work evaluates that question through:
+
+* multi-condition phenotype discovery,
+* harmonization sensitivity testing,
+* acquisition variance partitioning,
+* within-vendor validation,
+* vendor-clean continuous phenotype scoring.
+
+---
+
+# Dataset
+
+The analysis was performed on a retrospective cohort of:
+
+* **922 breast MRI patients**
+* multi-vendor MRI acquisitions
+* GE and Siemens scanners
+* extracted radiomic imaging features
+* clinical variables
+* annotation bounding boxes
+>>>>>>> 0c05d24cdfb4dc2901970f18740d7cd03e2b634d
 
 
 ---
